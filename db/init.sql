@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS hands (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  player_cards TEXT,
-  dealer_cards TEXT,
-  result TEXT,
-  count INTEGER,
-  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-);

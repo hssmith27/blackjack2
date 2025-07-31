@@ -13,7 +13,7 @@ app.use(cors({
 app.use(bodyParser.json());
 
 app.listen(PORT, () => {
-  console.log('Server running on http://localhost:${PORT}');
+  console.log(`Server running on http://localhost:${PORT}`);
 });
 
 app.post("/login", async (req, res) => {
