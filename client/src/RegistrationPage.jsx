@@ -1,17 +1,20 @@
-import { useState } from "react";
+import { useState } from "react"
 import './LoginPage.css'
+import { useNavigate } from "react-router-dom";
 
-export default function LoginPage() {
+export default function RegistrationPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+
+    const navigate = useNavigate();
 
     const handleSubmit = async(e) => {
         e.preventDefault();
         setError("");
         
         try {
-            const res = await fetch ("http://localhost:3001/login", {
+            const res = await fetch ("http://localhost:3001/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
@@ -21,21 +24,21 @@ export default function LoginPage() {
             const data = await res.json();
 
             if (!res.ok) {
-                setError(data.message || "Login failed");
+                setError(data.message || "Registration failed");
             }
             else {
-                alert("Logged in successfully!");
-                console.log(data.chipCount);
+                alert("Registered successfully!");
+                navigate("/login");
             }
         }
         catch (err) {
-            console.error("Loggin error:", err);
+            console.error("Registration error:", err);
             setError("Something went wrong");
         }
     }
     return (
         <div className="login">
-            <h1>Login to 21 Tactics</h1>
+            <h1>Register for 21 Tactics</h1>
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"
@@ -55,7 +58,6 @@ export default function LoginPage() {
                     Submit
                 </button>
                 {error && <div className="login-error">{error}</div>}
-                <p>Create an account: <a href = "/register">Register Here</a></p>
             </form>
         </div>
     );
