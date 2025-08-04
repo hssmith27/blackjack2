@@ -7,7 +7,7 @@ body {
     align-items: center;
 }
 
-.login {
+.landing-page {
     width: 50vw;
     max-width: 800px;
     padding: 4% 6%;
@@ -21,7 +21,7 @@ body {
     border-style: solid;
 }
 
-.login h1 {
+.landing-page h1 {
     text-align: center;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -34,13 +34,13 @@ body {
         1px 1px 0 black;
 }
 
-.login form {
+.landing-page form {
     display: flex;
     flex-direction: column;
     gap: 0.35vw;
 }
 
-.login input {
+.landing-page input {
     padding: 3%;
     font-size: 1rem;
     border: 1px solid #ccc;
@@ -49,7 +49,7 @@ body {
     width: 100%;
 }
 
-.login button {
+.landing-page button {
     padding: 3%;
     font-size: 1rem;
     background-color: black;
@@ -60,11 +60,11 @@ body {
     width: 100%;
 }
 
-.login button:hover {
+.landing-page button:hover {
     background-color: #333
 }
 
-.login-error {
+.error {
     color: red;
     text-align: center;
     font-size: 0.9rem;

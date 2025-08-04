@@ -1,6 +1,6 @@
-import { useState } from "react"
-import './LoginPage.css'
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react'
+import './LandingPages.css'
+import { useNavigate } from 'react-router-dom'
 
 export default function RegistrationPage() {
     const [email, setEmail] = useState("");
@@ -37,7 +37,7 @@ export default function RegistrationPage() {
         }
     }
     return (
-        <div className="login">
+        <div className="landing-page">
             <h1>Register for 21 Tactics</h1>
             <form onSubmit={handleSubmit}>
                 <input

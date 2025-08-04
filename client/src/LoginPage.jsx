@@ -1,5 +1,6 @@
-import { useState } from "react";
-import './LoginPage.css'
+import { useState } from 'react';
+import './LandingPages.css'
+
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -34,7 +35,7 @@ export default function LoginPage() {
         }
     }
     return (
-        <div className="login">
+        <div className="landing-page">
             <h1>Login to 21 Tactics</h1>
             <form onSubmit={handleSubmit}>
                 <input
@@ -54,7 +55,7 @@ export default function LoginPage() {
                 <button type="submit">
                     Submit
                 </button>
-                {error && <div className="login-error">{error}</div>}
+                {error && <div className="error">{error}</div>}
                 <p>Create an account: <a href = "/register">Register Here</a></p>
             </form>
         </div>
