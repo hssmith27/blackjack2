@@ -1,8 +1,8 @@
-import IntroPage from './IntroPage.jsx'
-import LoginPage from './LoginPage.jsx'
-import RegistrationPage from './RegistrationPage.jsx'
-import GamePage from './GamePage.jsx'
-import './App.css'
+import IntroPage from './pages/IntroPage.jsx'
+import LoginPage from './pages/LoginPage.jsx'
+import RegistrationPage from './pages/RegistrationPage.jsx'
+import GamePage from './pages/GamePage.jsx'
+import './styles/App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 

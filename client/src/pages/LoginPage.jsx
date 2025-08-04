@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import './LandingPages.css'
 import { useNavigate } from 'react-router-dom'
+import '../styles/LandingPages.css'
 
-export default function RegistrationPage() {
+export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -14,7 +14,7 @@ export default function RegistrationPage() {
         setError("");
         
         try {
-            const res = await fetch ("http://localhost:3001/register", {
+            const res = await fetch ("http://localhost:3001/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
@@ -24,21 +24,23 @@ export default function RegistrationPage() {
             const data = await res.json();
 
             if (!res.ok) {
-                setError(data.message || "Registration failed");
+                setError(data.message || "Login failed");
             }
             else {
-                alert("Registered successfully!");
-                navigate("/login");
+                navigate("/game");
+
+                // REMOVE THIS
+                console.log(data.chipCount);
             }
         }
         catch (err) {
-            console.error("Registration error:", err);
+            console.error("Loggin error:", err);
             setError("Something went wrong");
         }
     }
     return (
         <div className="landing-page">
-            <h1>Register for 21 Tactics</h1>
+            <h1>Login to 21 Tactics</h1>
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"
@@ -57,7 +59,8 @@ export default function RegistrationPage() {
                 <button type="submit">
                     Submit
                 </button>
-                {error && <div className="login-error">{error}</div>}
+                {error && <div className="error">{error}</div>}
+                <p>Create an account: <a href = "/register">Register Here</a></p>
             </form>
         </div>
     );
