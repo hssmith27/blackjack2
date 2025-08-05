@@ -62,3 +62,38 @@ app.post("/register", async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
 });
+
+app.get("/get-chip-count/:email", async (req, res) => {
+    const { email } = req.params;
+
+    try {
+        const [rows] = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
+
+        if (rows.length > 0) {
+            res.json({ success: true, chipCount: rows[0].chip_count });
+        }
+        else {
+            res.json({ success: false, message: "User not found" });
+        }
+    }
+    catch (err) {
+        console.error("Error fetching chip count:", err);
+        res.status(500).json({ success: false, err });
+    }
+});
+
+app.post("/update-chip-count", async (req, res) => {
+    const { email, chipChange } = req.body;
+
+    try {
+        await pool.query("UPDATE users SET chip_count = chip_count + ? where email = ?", [chipChange, email]);
+
+        const [rows] = await pool.query("SELECT chip_count FROM users where email = ?", [email]);
+
+        res.json({ success: true, chipCount: rows[0].chip_count });
+    }
+    catch (err) {
+        console.error("Error updating chip count:", err);
+        res.status(500).json({ success: false, err });
+    }
+});

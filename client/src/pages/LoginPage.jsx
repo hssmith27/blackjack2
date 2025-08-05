@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useUser } from "../UserContext";
 import '../styles/LandingPages.css'
 
 export default function LoginPage() {
@@ -7,6 +8,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    const { setChipCount } = useUser();
     const navigate = useNavigate();
 
     const handleSubmit = async(e) => {
@@ -27,10 +29,8 @@ export default function LoginPage() {
                 setError(data.message || "Login failed");
             }
             else {
+                localStorage.setItem("email", email);
                 navigate("/game");
-
-                // REMOVE THIS
-                console.log(data.chipCount);
             }
         }
         catch (err) {
@@ -38,6 +38,7 @@ export default function LoginPage() {
             setError("Something went wrong");
         }
     }
+    
     return (
         <div className="landing-page">
             <h1>Login to 21 Tactics</h1>
