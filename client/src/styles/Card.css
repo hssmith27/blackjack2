@@ -1,0 +1,40 @@
+.card {
+  width: 4rem;
+  height: 6rem; 
+  border-radius: 0.5rem;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 16px;
+  font-weight: bold;
+  user-select: none;
+}
+
+.card.red {
+  color: #c00;
+}
+
+.card.black {
+  color: #000;
+}
+
+.card.back {
+  background-color: #1e3a8a;
+  border: 0.3rem solid white;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.card .top {
+  align-self: flex-start;
+}
+
+.card .bottom {
+  align-self: flex-end;
+}

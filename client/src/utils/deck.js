@@ -1,5 +1,5 @@
-const suits = ["D", "H", "C", "S"];
 const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+const suits = ["D", "H", "C", "S"];
 
 /**
  * Creates a deck where each card is a string of the form "RankSuit"

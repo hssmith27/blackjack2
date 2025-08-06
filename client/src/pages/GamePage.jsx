@@ -1,6 +1,7 @@
 import { createShoe, shuffle, calculateHandValue, isBust, isBlackjack } from '../utils/deck.js'
 import { useUser } from '../UserContext'
 import { useEffect } from 'react'
+import Card from '../GameComponents/Card.jsx'
 
 export default function GamePage() {
     const { chipCount, setChipCount, email, setEmail } = useUser();
@@ -67,7 +68,7 @@ export default function GamePage() {
     return (
         <div className="landing-page">
             <h1>{chipCount}</h1>
-            <button onClick={() => updateChipCount(1)}>Minus</button>
+            <Card card={"10C"} hidden={true}/>
         </div>
     );
 }
