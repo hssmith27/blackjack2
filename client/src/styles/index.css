@@ -1,8 +1,8 @@
 body {
-  font-family: 'Mulish', sans-serif;
-  background-image: url("background.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment:fixed;
-  background-size:cover;
+    font-family: 'Mulish', sans-serif;
+    background-image: url("background.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    background-size:cover;
 }

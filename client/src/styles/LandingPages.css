@@ -11,7 +11,7 @@ body {
     width: 50vw;
     max-width: 800px;
     padding: 4% 6%;
-    background: #35654d;
+    background: radial-gradient(circle at center, #35654d 0%, #004d40 100%);
     border-radius: 1rem;
     box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
     box-sizing: border-box;

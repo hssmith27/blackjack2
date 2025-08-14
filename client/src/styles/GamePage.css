@@ -1,0 +1,104 @@
+.game-page {
+    width: 50vw;
+    max-width: 800px;
+    padding: 4% 6%;
+    background: radial-gradient(circle at center, #35654d 0%, #004d40 100%);
+    border-radius: 1rem;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    
+    border-color: black;
+    border-width: 0.2rem;
+    border-style: solid;
+}
+
+.game-page h2 {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-size: 2.75rem;
+    color: #FFFFFF;
+    text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black;
+}
+
+.game-setup form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35vw;
+}
+
+.game-setup input {
+    padding: 3%;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.4rem;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.game-setup button {
+    padding: 3%;
+    font-size: 1rem;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.game-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.game-actions button {
+  background: linear-gradient(145deg, #222, #444);
+  border: 2px solid #d4af37;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.15s ease;
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.6);
+  user-select: none;
+}
+
+.game-actions button:hover {
+  background: linear-gradient(145deg, #333, #555);
+  transform: translateY(-2px);
+}
+
+.game-actions button:active {
+  transform: translateY(0);
+  box-shadow: 0 0.05rem 0.25rem rgba(0, 0, 0, 0.8);
+}
+
+.chip-counter {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    background-color: #222;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 2px solid #d4af37;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+}
