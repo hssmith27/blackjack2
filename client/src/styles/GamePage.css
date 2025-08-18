@@ -1,7 +1,7 @@
 .game-page {
     width: 50vw;
     max-width: 800px;
-    padding: 4% 6%;
+    padding: 2% 3%;
     background: radial-gradient(circle at center, #35654d 0%, #004d40 100%);
     border-radius: 1rem;
     box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
@@ -15,7 +15,8 @@
 .game-page h2 {
     text-align: center;
     font-weight: 700;
-    margin-bottom: 1rem;
+	margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
     font-size: 2.75rem;
     color: #FFFFFF;
     text-shadow:
@@ -52,34 +53,34 @@
 }
 
 .game-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 1.5rem;
+	display: flex;
+	gap: 1rem;
+	justify-content: center;
+	margin-top: 1.5rem;
 }
 
 .game-actions button {
-  background: linear-gradient(145deg, #222, #444);
-  border: 2px solid #d4af37;
-  color: #fff;
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background 0.25s ease, transform 0.15s ease;
-  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.6);
-  user-select: none;
+	background: linear-gradient(145deg, #222, #444);
+	border: 2px solid #d4af37;
+	color: #fff;
+	font-weight: 700;
+	font-size: 1rem;
+	padding: 0.75rem 1.5rem;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	transition: background 0.25s ease, transform 0.15s ease;
+	box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.6);
+	user-select: none;
 }
 
 .game-actions button:hover {
-  background: linear-gradient(145deg, #333, #555);
-  transform: translateY(-2px);
+	background: linear-gradient(145deg, #333, #555);
+	transform: translateY(-2px);
 }
 
 .game-actions button:active {
-  transform: translateY(0);
-  box-shadow: 0 0.05rem 0.25rem rgba(0, 0, 0, 0.8);
+	transform: translateY(0);
+	box-shadow: 0 0.05rem 0.25rem rgba(0, 0, 0, 0.8);
 }
 
 .chip-counter {
@@ -101,4 +102,18 @@
     font-size: 16px;
     font-weight: bold;
     color: #fff;
+}
+
+.game-state {
+	text-align: center;
+    font-weight: 700;
+	margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 2.75rem;
+    color: #FFFFFF;
+    text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black;
 }

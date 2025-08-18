@@ -11,7 +11,10 @@ export default function GamePage() {
     const [wager, setWager] = useState(0);
     const [showHands, setShowHands] = useState(false);
     const [deck, setDeck] = useState(() => shuffle(createShoe(6)));
+    const [gameState, setGameState] = useState("");
+    const [gameOver, setGameOver] = useState(false);
 
+    // Maintain chip count
     useEffect(() => {
         const storedEmail = localStorage.getItem("email");
 
@@ -38,6 +41,55 @@ export default function GamePage() {
             setDeck(shuffle(createShoe(6)));
         }
     }, [deck]);
+
+    // Evalutes wins and losses
+    useEffect(() => {
+        const dealerHandVal = calculateHandValue(dealerHand);
+        const playerHandVal = calculateHandValue(playerHand);
+
+        // Check Blackjack
+        if (isBlackjack(dealerHand)) {
+            if (isBlackjack(playerHand)) {
+                updateChipCount(wager);
+                setGameState("Push");
+                setGameOver(true);
+            }
+            else {
+                setGameState("Dealer Blackjack");
+                setGameOver(true);
+            }
+        }
+        else if (isBlackjack(playerHand)) {
+            updateChipCount(Math.round(wager * 5 / 2));
+            setGameState("Player Blackjack");
+            setGameOver(true);
+        }
+
+        // Check for busts
+        else if (isBust(playerHand)) {
+            setGameState("Player Bust");
+            setGameOver(true);
+        }
+        else if (isBust(dealerHand)) {
+            updateChipCount(Math.round(wager * 2));
+            setGameState("Dealer Bust");
+            setGameOver(true);
+        }
+
+        else if (gameOver) {
+            if (dealerHandVal > playerHandVal) {
+                setGameState("Dealer Win");
+            }
+            else if (dealerHandVal < playerHandVal) {
+                updateChipCount(wager * 2);
+                setGameState("Player Win");
+            }
+            else {
+                updateChipCount(wager);
+                setGameState("Push");
+            }
+        }
+    }, [playerHand, dealerHand]);
 
     async function fetchChipCount(storedEmail) {
         try {
@@ -89,15 +141,16 @@ export default function GamePage() {
 
     function setup(e) {
         e.preventDefault();
+        updateChipCount(-wager);
 
+        setGameState("");
+        setGameOver(false);
         setDealerHand([]);
         setPlayerHand([]);
 
-        dealCards(2, 2);
-        
-        updateChipCount(-wager);
-
         setShowHands(true);
+
+        dealCards(2, 2);
     }
     
     return (
@@ -129,7 +182,7 @@ export default function GamePage() {
                 <>
                     <div className="game-elements">
                         <h2>Dealer</h2>
-                        <Hand hand={dealerHand} isDealer={true} hideDealerCard={true}/>
+                        <Hand hand={dealerHand} isDealer={true} hideDealerCard={!gameOver}/>
                         <h2>Player</h2>
                         <Hand hand={playerHand} isDealer={false} hideDealerCard={false}/>
                         <div className="game-actions">
@@ -139,6 +192,7 @@ export default function GamePage() {
                             <button>Split</button>
                         </div>
                     </div>
+                    {gameOver && <div className="game-state">{gameState}</div>}
                 </>
             )}
         </div>
