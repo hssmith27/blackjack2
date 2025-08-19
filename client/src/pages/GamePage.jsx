@@ -179,17 +179,25 @@ export default function GamePage() {
      * Handles dealer action after player action ends
      */
     const playDealer = () => {
-        setDealerHand(prev => {
-            const newHand = [...prev];
-            if (calculateHandValue(newHand) < 17) {
-                const card = deck[deck.length - 1];
-                setDeck(deck.slice(0, deck.length - 1));
-                newHand.push(card);
-                setTimeout(playDealer, 500);
-            }
-            return newHand;
+        setDealerHand(prevDealerHand => {
+            setDeck(prevDeck => {
+                let newDealerHand = [...prevDealerHand];
+                let newDeck = [...prevDeck];
+
+                while (calculateHandValue(newDealerHand) < 17 && newDeck.length > 0) {
+                    const card = newDeck.pop();
+                    newDealerHand.push(card);
+                }
+
+                // Update dealer hand
+                setDealerHand(newDealerHand);
+
+                return newDeck;
+            });
+
+            return prevDealerHand;
         });
-    }
+    };
 
     /**
      * Button functionality for stand
