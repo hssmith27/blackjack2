@@ -78,14 +78,29 @@ export function calculateHandValue(hand) {
     return total;
 }
 
+/**
+ * Checks if a given hand has a value greater than 21
+ * @param {string[]} hand the hand that's checked
+ * @returns whether the hand's value is greater than 21
+ */
 export function isBust(hand) {
     return calculateHandValue(hand) > 21;
 }
 
+/**
+ * Checks if a given hand is a blackjack
+ * @param {string[]} hand the hand that's checked
+ * @returns whether the hand is a blackjack
+ */
 export function isBlackjack(hand) {
     return calculateHandValue(hand) === 21 && hand.length === 2;
 }
 
+/**
+ * Checks if the cards of a given hand can be split
+ * @param {string[]} hand the hand that's checked
+ * @returns whether the cards of a given hand can be split
+ */
 export function canSplit(hand) {
     const tenValued = ["10", "J", "Q", "K"];
 

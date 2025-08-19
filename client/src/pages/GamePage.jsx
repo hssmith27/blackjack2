@@ -35,6 +35,11 @@ export default function GamePage() {
         getChipCount();
     }, []);
 
+    /**
+     * Gathers the chip count associated with a given email
+     * @param {string} storedEmail the email whose chip count is checked
+     * @returns chip count associated with a given email
+     */
     async function fetchChipCount(storedEmail) {
         try {
             const res = await fetch(`http://localhost:3001/get-chip-count/${storedEmail}`);
@@ -47,6 +52,10 @@ export default function GamePage() {
         }
     }
 
+    /**
+     * Updates chip count in SQL table, if succesful, then updates the chip count state
+     * @param {int} chipChange the change in chips inputted
+     */
     async function updateChipCount(chipChange) {
         try {
             const res = await fetch("http://localhost:3001/update-chip-count", {
@@ -130,6 +139,11 @@ export default function GamePage() {
         }
     }, [playerHand, dealerHand, gameOver]);
 
+    /**
+     * Deals cards to player and dealer
+     * @param {int} numPlayer number of cards to be dealt to player
+     * @param {int} numDealer number of cards to be dealt to dealer
+     */
     function dealCards(numPlayer, numDealer) {
         const playerCards = deck.slice(-(numPlayer));
         const dealerCards = deck.slice(-(numPlayer + numDealer), -(numPlayer));
@@ -140,6 +154,9 @@ export default function GamePage() {
         setDealerHand([...dealerHand, ...dealerCards]);
     }
 
+    /**
+     * Handles setup of game page
+     */
     function setup(e) {
         e.preventDefault();
         updateChipCount(-wager);
@@ -149,12 +166,18 @@ export default function GamePage() {
         dealCards(2, 2);
     }
 
+    /**
+     * Button functionality for hit
+     */
     const handleHit = () => {
         if (!gameOver) {
             dealCards(1, 0);
         }
     }
 
+    /**
+     * Handles dealer action after player action ends
+     */
     const playDealer = () => {
         setDealerHand(prev => {
             const newHand = [...prev];
@@ -168,6 +191,9 @@ export default function GamePage() {
         });
     }
 
+    /**
+     * Button functionality for stand
+     */
     const handleStand = () => {
         if (!gameOver) {
             setGameOver(true);
@@ -175,6 +201,12 @@ export default function GamePage() {
         }
     }
 
+    // TODO: Make wager go back to 1/2 value after double down round
+    // Could just use a state to track if someone doubled down, seems
+    // like a bad solution though
+    /**
+     * Button functionality for double down
+     */
     const handleDoubleDown = () => {
         if (!gameOver && wager <= chipCount) {
             setGameOver(true);
@@ -196,12 +228,18 @@ export default function GamePage() {
         }
     }
     
+    /**
+     * Button functionality for split
+     */
     const handleSplit = () => {
         if (!gameOver && canSplit(playerHand)) {
             alert("SPLIT");
         }
     }
 
+    /**
+     * Button functionality for resetting the game
+     */
     const reset = () => {
         setShowHands(false);
         setGameState("");

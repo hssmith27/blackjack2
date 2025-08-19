@@ -9,6 +9,9 @@ export default function RegistrationPage() {
 
     const navigate = useNavigate();
 
+    /**
+     * Handles registration attempts
+     */
     const handleSubmit = async(e) => {
         e.preventDefault();
         setError("");

@@ -11,6 +11,9 @@ export default function LoginPage() {
     const { setChipCount } = useUser();
     const navigate = useNavigate();
 
+    /**
+     * Handles login attempts
+     */
     const handleSubmit = async(e) => {
         e.preventDefault();
         setError("");
