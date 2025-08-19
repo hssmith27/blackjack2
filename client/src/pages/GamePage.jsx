@@ -1,4 +1,4 @@
-import { createShoe, shuffle, calculateHandValue, isBust, isBlackjack } from '../utils/deck.js'
+import { createShoe, shuffle, calculateHandValue, isBust, isBlackjack, canSplit } from '../utils/deck.js'
 import { useUser } from '../UserContext'
 import { useEffect, useState } from 'react'
 import Hand from '../GameComponents/Hand.jsx'
@@ -34,6 +34,44 @@ export default function GamePage() {
 
         getChipCount();
     }, []);
+
+    async function fetchChipCount(storedEmail) {
+        try {
+            const res = await fetch(`http://localhost:3001/get-chip-count/${storedEmail}`);
+            const data = await res.json();
+            return data;
+        } 
+        catch (err) {
+            console.error("Fetch chip count error:", err);
+            return null;
+        }
+    }
+
+    async function updateChipCount(chipChange) {
+        try {
+            const res = await fetch("http://localhost:3001/update-chip-count", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, chipChange })
+            });
+
+            if (!res.ok) {
+                throw new Error("Server Error:", res.status);
+            }
+
+            const data = await res.json();
+
+            if (data.success) {
+                setChipCount(data.chipCount);
+            }
+            else {
+                console.error("Update failed:", data.message || "Unknown error");
+            }
+        }
+        catch (err) {
+            console.error("Failed to update chips:", error);
+        }
+    }
 
     // Creates new shoe when out of cards
     useEffect(() => {
@@ -76,6 +114,7 @@ export default function GamePage() {
             setGameOver(true);
         }
 
+        // Check after player stands or doubles down
         else if (gameOver) {
             if (dealerHandVal > playerHandVal) {
                 setGameState("Dealer Win");
@@ -89,45 +128,7 @@ export default function GamePage() {
                 setGameState("Push");
             }
         }
-    }, [playerHand, dealerHand]);
-
-    async function fetchChipCount(storedEmail) {
-        try {
-            const res = await fetch(`http://localhost:3001/get-chip-count/${storedEmail}`);
-            const data = await res.json();
-            return data;
-        } 
-        catch (err) {
-            console.error("Fetch chip count error:", err);
-            return null;
-        }
-    }
-
-    async function updateChipCount(chipChange) {
-        try {
-            const res = await fetch("http://localhost:3001/update-chip-count", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, chipChange })
-            });
-
-            if (!res.ok) {
-                throw new Error("Server Error:", res.status);
-            }
-
-            const data = await res.json();
-
-            if (data.success) {
-                setChipCount(data.chipCount);
-            }
-            else {
-                console.error("Update failed:", data.message || "Unknown error");
-            }
-        }
-        catch (err) {
-            console.error("Failed to update chips:", error);
-        }
-    }
+    }, [playerHand, dealerHand, gameOver]);
 
     function dealCards(numPlayer, numDealer) {
         const playerCards = deck.slice(-(numPlayer));
@@ -143,14 +144,71 @@ export default function GamePage() {
         e.preventDefault();
         updateChipCount(-wager);
 
-        setGameState("");
-        setGameOver(false);
-        setDealerHand([]);
-        setPlayerHand([]);
-
         setShowHands(true);
 
         dealCards(2, 2);
+    }
+
+    const handleHit = () => {
+        if (!gameOver) {
+            dealCards(1, 0);
+        }
+    }
+
+    const playDealer = () => {
+        setDealerHand(prev => {
+            const newHand = [...prev];
+            if (calculateHandValue(newHand) < 17) {
+                const card = deck[deck.length - 1];
+                setDeck(deck.slice(0, deck.length - 1));
+                newHand.push(card);
+                setTimeout(playDealer, 500);
+            }
+            return newHand;
+        });
+    }
+
+    const handleStand = () => {
+        if (!gameOver) {
+            setGameOver(true);
+            playDealer();
+        }
+    }
+
+    const handleDoubleDown = () => {
+        if (!gameOver && wager <= chipCount) {
+            setGameOver(true);
+            updateChipCount(-wager);
+            setWager(wager * 2);
+
+            setPlayerHand(prev => {
+                const newHand = [...prev];
+                const card = deck[deck.length - 1];
+                setDeck(deck.slice(0, deck.length - 1));
+                newHand.push(card);
+
+                if (!isBust(newHand)) {
+                    playDealer();
+                }
+
+                return newHand;
+            })
+        }
+    }
+    
+    const handleSplit = () => {
+        if (!gameOver && canSplit(playerHand)) {
+            alert("SPLIT");
+        }
+    }
+
+    const reset = () => {
+        setShowHands(false);
+        setGameState("");
+        setGameOver(false);
+
+        setDealerHand([]);
+        setPlayerHand([]);
     }
     
     return (
@@ -186,13 +244,14 @@ export default function GamePage() {
                         <h2>Player</h2>
                         <Hand hand={playerHand} isDealer={false} hideDealerCard={false}/>
                         <div className="game-actions">
-                            <button>Hit</button>
-                            <button>Stand</button>
-                            <button>Double Down</button>
-                            <button>Split</button>
+                            <button onClick={handleHit}>Hit</button>
+                            <button onClick={handleStand}>Stand</button>
+                            <button onClick={handleDoubleDown}>Double Down</button>
+                            <button onClick={handleSplit}>Split</button>
                         </div>
                     </div>
                     {gameOver && <div className="game-state">{gameState}</div>}
+                    {gameOver && <button onClick={reset}>Reset</button>}
                 </>
             )}
         </div>

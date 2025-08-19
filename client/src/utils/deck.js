@@ -85,3 +85,21 @@ export function isBust(hand) {
 export function isBlackjack(hand) {
     return calculateHandValue(hand) === 21 && hand.length === 2;
 }
+
+export function canSplit(hand) {
+    const tenValued = ["10", "J", "Q", "K"];
+
+    if (hand.length === 2) {
+        const rank1 = hand[0].slice(0, -1);
+        const rank2 = hand[1].slice(0, -1);
+
+        if (rank1 === rank2) {
+            return true;
+        }
+        if (tenValued.includes(rank1) && tenValued.includes(rank2)) {
+            return true;
+        }
+    }
+
+    return false;
+}
