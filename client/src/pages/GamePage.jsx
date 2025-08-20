@@ -189,7 +189,6 @@ export default function GamePage() {
                     newDealerHand.push(card);
                 }
 
-                // Update dealer hand
                 setDealerHand(newDealerHand);
 
                 return newDeck;
@@ -295,9 +294,10 @@ export default function GamePage() {
                             <button onClick={handleDoubleDown}>Double Down</button>
                             <button onClick={handleSplit}>Split</button>
                         </div>
+                        {gameOver && <div className="game-state">{gameState}</div>}
+                        {gameOver && <button className="reset" onClick={reset}>Reset</button>}
                     </div>
-                    {gameOver && <div className="game-state">{gameState}</div>}
-                    {gameOver && <button onClick={reset}>Reset</button>}
+                    
                 </>
             )}
         </div>

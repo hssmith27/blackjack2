@@ -59,7 +59,7 @@
 	margin-top: 1.5rem;
 }
 
-.game-actions button {
+.game-elements button {
 	background: linear-gradient(145deg, #222, #444);
 	border: 2px solid #d4af37;
 	color: #fff;
@@ -73,12 +73,12 @@
 	user-select: none;
 }
 
-.game-actions button:hover {
+.game-elements button:hover {
 	background: linear-gradient(145deg, #333, #555);
 	transform: translateY(-2px);
 }
 
-.game-actions button:active {
+.game-elements button:active {
 	transform: translateY(0);
 	box-shadow: 0 0.05rem 0.25rem rgba(0, 0, 0, 0.8);
 }
