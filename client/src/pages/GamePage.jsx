@@ -1,18 +1,38 @@
-import { createShoe, shuffle, calculateHandValue, isBust, isBlackjack, canSplit } from '../utils/deck.js'
+import { createShoe, shuffle, calculateHandValue, isBust, isBlackjack, canSplit, cardValue } from '../utils/deck.js'
 import { useUser } from '../UserContext'
 import { useEffect, useState } from 'react'
 import Hand from '../GameComponents/Hand.jsx'
+import PlayerHands from '../GameComponents/PlayerHands.jsx'
 import '../styles/GamePage.css'
 
+// Number of decks in the shoe
+const NUM_DECKS = 6;
+
 export default function GamePage() {
-    const { chipCount, setChipCount, email, setEmail } = useUser();
+    // Cards
     const [dealerHand, setDealerHand] = useState([]);
-    const [playerHand, setPlayerHand] = useState([]);
+    const [playerHands, setPlayerHands] = useState([[]]);
+    const [deck, setDeck] = useState(() => shuffle(createShoe(NUM_DECKS)));
+
+    // Game Evaluation and Pay
     const [wager, setWager] = useState(0);
-    const [showHands, setShowHands] = useState(false);
-    const [deck, setDeck] = useState(() => shuffle(createShoe(6)));
-    const [gameState, setGameState] = useState("");
+    const [payouts, setPayouts] = useState([]);
+
+    // Game Status
+    const [showHands, setShowHands] = useState(false);  
+    const [gameState, setGameState] = useState([]);
+    const [dealerAction, setDealerAction] = useState(false);
+
+    const [currentHand, setCurrentHand] = useState(0);
+    const [handOver, setHandOver] = useState([false]);
     const [gameOver, setGameOver] = useState(false);
+    const [pendingDD, setPendingDD] = useState(false);
+
+    const [count, setCount] = useState(0);
+    const [showCount, setShowCount] = useState(false);
+
+    // User context
+    const { chipCount, setChipCount, email, setEmail } = useUser();
 
     // Maintain chip count
     useEffect(() => {
@@ -82,62 +102,110 @@ export default function GamePage() {
         }
     }
 
-    // Creates new shoe when out of cards
+    // Creates new shoe when halfway through the current shoe
     useEffect(() => {
-        if (deck.length === 0) {
+        if (deck.length <= (NUM_DECKS * 26)) {
             setDeck(shuffle(createShoe(6)));
+            setCount(0);
         }
     }, [deck]);
 
+    // Checks when all hands are done
+    useEffect(() => {
+        // Checks if last hand is done
+        if (handOver[handOver.length - 1]) {
+            if (dealerAction) {
+                playDealer();
+            }
+            // Add to count for hidden dealer card
+            setCount(prevCount => prevCount + cardValue(dealerHand[1]));
+
+            setGameOver(true);
+        }
+    }, [handOver]);
+
+    // Payouts
+    useEffect(() => {
+        const numHands = playerHands.length;
+
+        if (gameOver) {
+            const updatedGameState = [...gameState];
+
+            for (let i = 0; i < numHands; i++) {
+                const dealerHandVal = calculateHandValue(dealerHand);
+                const playerHandVal = calculateHandValue(playerHands[i]);
+
+                const playerHand = playerHands[i];
+                const payout = payouts[i];
+
+                // Check Blackjack Payouts, can only happen with one hand
+                if (isBlackjack(dealerHand, 1)) {
+                    if (isBlackjack(playerHand, numHands)) {
+                        updateChipCount(payout);
+                        updatedGameState[i] = "Push";
+                    }
+                    else {
+                        updatedGameState[i] = "Dealer Blackjack";
+                    }
+                }
+                else if (isBlackjack(playerHand, numHands)) {
+                    updateChipCount(Math.round(payout * (5 / 2)));
+                    updatedGameState[i] = "Player Blackjack";
+                }
+
+                // Check for busts
+                else if (isBust(playerHand)) {
+                    updatedGameState[i] = "Player Bust";
+                }
+                else if (isBust(dealerHand)) {
+                    updateChipCount(Math.round(payout * 2));
+                    updatedGameState[i] = "Dealer Bust";
+                }
+
+                // Cover remaining values
+                else if (gameOver) {
+                    if (dealerHandVal > playerHandVal) {
+                        updatedGameState[i] = "Dealer Win";
+                    }
+                    else if (dealerHandVal < playerHandVal) {
+                        updateChipCount(payout * 2);
+                        updatedGameState[i] = "Player Win";
+                    }
+                    else {
+                        updateChipCount(payout);
+                        updatedGameState[i] = "Push";
+                    }
+                }
+            }
+
+            setGameState(updatedGameState);
+        }
+    }, [gameOver]);
+
+    /**
+     * Ends the current hand
+     */
+    const endHand = () => {
+        if (!isBust(playerHands[currentHand]) && !isBlackjack(playerHands[currentHand], playerHands.length)) { 
+            setDealerAction(true);
+        }
+
+        const newHandOver = [...handOver];
+        newHandOver[currentHand] = true
+        setHandOver(newHandOver);
+        setCurrentHand(currentHand + 1);
+    }
+
     // Evalutes wins and losses
     useEffect(() => {
-        const dealerHandVal = calculateHandValue(dealerHand);
-        const playerHandVal = calculateHandValue(playerHand);
+        const playerHand = playerHands[currentHand];
 
-        // Check Blackjack
-        if (isBlackjack(dealerHand)) {
-            if (isBlackjack(playerHand)) {
-                updateChipCount(wager);
-                setGameState("Push");
-                setGameOver(true);
-            }
-            else {
-                setGameState("Dealer Blackjack");
-                setGameOver(true);
+        if (currentHand < playerHands.length) {
+            if (isBust(playerHand) || isBust(dealerHand) || isBlackjack(dealerHand, 1) || isBlackjack(playerHand, playerHands.length)) {
+                endHand();
             }
         }
-        else if (isBlackjack(playerHand)) {
-            updateChipCount(Math.round(wager * 5 / 2));
-            setGameState("Player Blackjack");
-            setGameOver(true);
-        }
-
-        // Check for busts
-        else if (isBust(playerHand)) {
-            setGameState("Player Bust");
-            setGameOver(true);
-        }
-        else if (isBust(dealerHand)) {
-            updateChipCount(Math.round(wager * 2));
-            setGameState("Dealer Bust");
-            setGameOver(true);
-        }
-
-        // Check after player stands or doubles down
-        else if (gameOver) {
-            if (dealerHandVal > playerHandVal) {
-                setGameState("Dealer Win");
-            }
-            else if (dealerHandVal < playerHandVal) {
-                updateChipCount(wager * 2);
-                setGameState("Player Win");
-            }
-            else {
-                updateChipCount(wager);
-                setGameState("Push");
-            }
-        }
-    }, [playerHand, dealerHand, gameOver]);
+    }, [playerHands]);
 
     /**
      * Deals cards to player and dealer
@@ -145,13 +213,25 @@ export default function GamePage() {
      * @param {int} numDealer number of cards to be dealt to dealer
      */
     function dealCards(numPlayer, numDealer) {
+        let addedCount = 0;
         const playerCards = deck.slice(-(numPlayer));
         const dealerCards = deck.slice(-(numPlayer + numDealer), -(numPlayer));
 
         setDeck(deck.slice(0, -(numPlayer + numDealer)));
-
-        setPlayerHand([...playerHand, ...playerCards]);
         setDealerHand([...dealerHand, ...dealerCards]);
+
+        const newPlayerHands = [...playerHands];
+        newPlayerHands[currentHand] = [...newPlayerHands[currentHand], ...playerCards];
+        setPlayerHands(newPlayerHands);
+
+        // Count face up dealer card
+        if (dealerCards.length == 2) {
+            addedCount += cardValue(dealerCards[0]);
+        }
+        for (let i = 0; i < playerCards.length; i++) {
+            addedCount += cardValue(playerCards[i]);
+        }
+        setCount(count + addedCount);
     }
 
     /**
@@ -159,7 +239,9 @@ export default function GamePage() {
      */
     function setup(e) {
         e.preventDefault();
+
         updateChipCount(-wager);
+        setPayouts([wager]);
 
         setShowHands(true);
 
@@ -179,23 +261,22 @@ export default function GamePage() {
      * Handles dealer action after player action ends
      */
     const playDealer = () => {
-        setDealerHand(prevDealerHand => {
-            setDeck(prevDeck => {
-                let newDealerHand = [...prevDealerHand];
-                let newDeck = [...prevDeck];
+        let addedCount = 0;
 
-                while (calculateHandValue(newDealerHand) < 17 && newDeck.length > 0) {
-                    const card = newDeck.pop();
-                    newDealerHand.push(card);
-                }
+        let newDealerHand = [...dealerHand];
+        let newDeck = [...deck];
 
-                setDealerHand(newDealerHand);
+        while (calculateHandValue(newDealerHand) < 17) {
+            const card = newDeck.pop();
+            newDealerHand.push(card);
+            addedCount += cardValue(card);
+        }
 
-                return newDeck;
-            });
+        setCount(prevCount => prevCount + addedCount);
+        setDealerHand(newDealerHand);
+        setDeck(newDeck);
 
-            return prevDealerHand;
-        });
+        return newDeck;
     };
 
     /**
@@ -203,35 +284,32 @@ export default function GamePage() {
      */
     const handleStand = () => {
         if (!gameOver) {
-            setGameOver(true);
-            playDealer();
+            endHand();
         }
     }
 
-    // TODO: Make wager go back to 1/2 value after double down round
-    // Could just use a state to track if someone doubled down, seems
-    // like a bad solution though
+    // Ensures double down card is dealt in time
+    useEffect(() => {
+        if (pendingDD) {
+            endHand();
+            setPendingDD(false);
+        }
+    }, [pendingDD]);
+
     /**
      * Button functionality for double down
      */
     const handleDoubleDown = () => {
-        if (!gameOver && wager <= chipCount) {
-            setGameOver(true);
+        if (!gameOver && wager <= chipCount && playerHands[currentHand].length == 2) {
             updateChipCount(-wager);
-            setWager(wager * 2);
 
-            setPlayerHand(prev => {
-                const newHand = [...prev];
-                const card = deck[deck.length - 1];
-                setDeck(deck.slice(0, deck.length - 1));
-                newHand.push(card);
+            const newPayouts = [...payouts];
+            newPayouts[currentHand] = [newPayouts[currentHand] * 2];
+            setPayouts(newPayouts);
 
-                if (!isBust(newHand)) {
-                    playDealer();
-                }
+            dealCards(1, 0);
 
-                return newHand;
-            })
+            setPendingDD(true);
         }
     }
     
@@ -239,8 +317,16 @@ export default function GamePage() {
      * Button functionality for split
      */
     const handleSplit = () => {
-        if (!gameOver && canSplit(playerHand)) {
-            alert("SPLIT");
+        if (!gameOver && canSplit(playerHands[currentHand])) {
+            updateChipCount(-wager);
+            setHandOver([...handOver, false]);
+            setPayouts([...payouts, wager]);
+
+            const newPlayerHands = [...playerHands, []];
+            const splitCard = newPlayerHands[currentHand][1];
+            newPlayerHands[currentHand] = [newPlayerHands[currentHand][0]];
+            newPlayerHands[currentHand + 1] = [splitCard];
+            setPlayerHands(newPlayerHands);
         }
     }
 
@@ -249,16 +335,25 @@ export default function GamePage() {
      */
     const reset = () => {
         setShowHands(false);
-        setGameState("");
-        setGameOver(false);
 
+        setHandOver[[false]];
+        setGameOver(false);
+        setGameState([]);
+
+        setCurrentHand(0);
+        setDealerAction(false);
         setDealerHand([]);
-        setPlayerHand([]);
+        setPlayerHands([[]]);
     }
     
     return (
         <div className="game-page">
             <p className="chip-counter">{chipCount}</p>
+            <p className="count" 
+            onMouseEnter={() => setShowCount(true)}
+            onMouseLeave={() => setShowCount(false)}>
+                {showCount ? count : "Count"}
+            </p>
 
             {!showHands && (
                 <>
@@ -270,8 +365,8 @@ export default function GamePage() {
                                 value={wager}
                                 onChange={(e) => setWager(e.target.value)}
                                 required
-                                min="1"
-                                max={chipCount}
+                                min="10"
+                                max={Math.min(chipCount, 200)}
                             />
                             <button type="submit">
                                 Deal
@@ -287,17 +382,15 @@ export default function GamePage() {
                         <h2>Dealer</h2>
                         <Hand hand={dealerHand} isDealer={true} hideDealerCard={!gameOver}/>
                         <h2>Player</h2>
-                        <Hand hand={playerHand} isDealer={false} hideDealerCard={false}/>
+                        <PlayerHands hands={playerHands} current={currentHand} state={gameState}/>
                         <div className="game-actions">
                             <button onClick={handleHit}>Hit</button>
                             <button onClick={handleStand}>Stand</button>
                             <button onClick={handleDoubleDown}>Double Down</button>
                             <button onClick={handleSplit}>Split</button>
                         </div>
-                        {gameOver && <div className="game-state">{gameState}</div>}
                         {gameOver && <button className="reset" onClick={reset}>Reset</button>}
                     </div>
-                    
                 </>
             )}
         </div>

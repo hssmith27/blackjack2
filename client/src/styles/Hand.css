@@ -25,3 +25,38 @@
 .hand .card:hover {
     transform: translateY(-0.25rem);
 }
+
+.hand.current {
+    border: 0.25rem solid gold;
+    box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.7);
+    transform: scale(1.05);
+    background: radial-gradient(circle at center, #388e3c 0%, #1b5e20 100%);
+    animation: pulseGlow 1.5s infinite ease-in-out;
+    z-index: 2;
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 10px 3px rgba(255, 215, 0, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 20px 8px rgba(255, 215, 0, 0.9);
+    }
+    100% {
+        box-shadow: 0 0 10px 3px rgba(255, 215, 0, 0.6);
+    }
+}
+
+.message {
+	text-align: center;
+    font-weight: 700;
+	margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    color: #FFFFFF;
+    text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black;
+}

@@ -104,16 +104,23 @@
     color: #fff;
 }
 
-.game-state {
-	text-align: center;
-    font-weight: 700;
-	margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    font-size: 2.75rem;
-    color: #FFFFFF;
-    text-shadow:
-        -1px -1px 0 black,
-        1px -1px 0 black,
-        -1px 1px 0 black,
-        1px 1px 0 black;
+.count {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    background-color: #222;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 2px solid #d4af37;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
 }

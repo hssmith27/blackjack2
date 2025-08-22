@@ -89,11 +89,12 @@ export function isBust(hand) {
 
 /**
  * Checks if a given hand is a blackjack
- * @param {string[]} hand the hand that's checked
+ * @param {*} hand the hand that's checked
+ * @param {*} numHands the number of hands in play
  * @returns whether the hand is a blackjack
  */
-export function isBlackjack(hand) {
-    return calculateHandValue(hand) === 21 && hand.length === 2;
+export function isBlackjack(hand, numHands) {
+    return (calculateHandValue(hand) === 21 && hand.length === 2) && numHands === 1;
 }
 
 /**
@@ -117,4 +118,28 @@ export function canSplit(hand) {
     }
 
     return false;
+}
+
+/**
+ * Returns the card count value of any card
+ * @param {*} card the card whose count value is evaluated
+ * @returns the card count value of a given card
+ */
+export function cardValue(card) {
+    const plusOne = ["2", "3", "4", "5", "6"];
+    const neutral = ["7", "8", "9"];
+    const minusOne = ["10", "J", "Q", "K", "A"];
+
+    const rank = card.slice(0, -1);
+
+    if (plusOne.includes(rank)) {
+        return 1;
+    }
+    if (neutral.includes(rank)) {
+        return 0;
+    }
+    if (minusOne.includes(rank)) {
+        return -1;
+    }
+    return -1000000;
 }
