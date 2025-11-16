@@ -324,8 +324,9 @@ export default function GamePage() {
 
             const newPlayerHands = [...playerHands, []];
             const splitCard = newPlayerHands[currentHand][1];
+
             newPlayerHands[currentHand] = [newPlayerHands[currentHand][0]];
-            newPlayerHands[currentHand + 1] = [splitCard];
+            newPlayerHands[newPlayerHands.length - 1] = [splitCard];
             setPlayerHands(newPlayerHands);
         }
     }
