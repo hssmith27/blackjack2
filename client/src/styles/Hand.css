@@ -1,21 +1,25 @@
 .hand {
     display: flex;
     gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    border-radius: 0.75rem;
-    min-height: 7.5rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    min-height: 6.5rem;
+    min-width: 18rem;
+    width: 100%;
     align-items: center;
     justify-content: center;
-    border: 0.125rem solid #d4af37;
-    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.5);
+    background: radial-gradient(circle at center, #2a2a2a 0%, #121212 100%);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hand.dealer {
-    background: radial-gradient(circle at center, #00695c 0%, #004d40 100%);
+    background: radial-gradient(circle at center, #222 0%, #111 100%);
 }
 
 .hand.player {
-    background: radial-gradient(circle at center, #2e7d32 0%, #1b5e20 100%);
+    background: radial-gradient(circle at center, #333 0%, #1b1b1b 100%);
 }
 
 .hand .card {
@@ -26,34 +30,35 @@
     transform: translateY(-0.25rem);
 }
 
+/* Only pulse if current hand is active */
 .hand.current {
-    border: 0.25rem solid gold;
-    box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.7);
+    border: 2px solid #00bfa5;
+    box-shadow: 0 0 15px 5px rgba(0, 191, 165, 0.7);
     transform: scale(1.05);
-    background: radial-gradient(circle at center, #388e3c 0%, #1b5e20 100%);
+    background: radial-gradient(circle at center, #004d40 0%, #002f2a 100%);
     animation: pulseGlow 1.5s infinite ease-in-out;
     z-index: 2;
 }
 
 @keyframes pulseGlow {
     0% {
-        box-shadow: 0 0 10px 3px rgba(255, 215, 0, 0.6);
+        box-shadow: 0 0 10px 3px rgba(0, 191, 165, 0.6);
     }
     50% {
-        box-shadow: 0 0 20px 8px rgba(255, 215, 0, 0.9);
+        box-shadow: 0 0 20px 8px rgba(0, 191, 165, 0.9);
     }
     100% {
-        box-shadow: 0 0 10px 3px rgba(255, 215, 0, 0.6);
+        box-shadow: 0 0 10px 3px rgba(0, 191, 165, 0.6);
     }
 }
 
 .message {
-	text-align: center;
+    text-align: center;
     font-weight: 700;
-	margin-top: 0.5rem;
+    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    font-size: 2rem;
-    color: #FFFFFF;
+    font-size: 1.8rem;
+    color: #ffffff;
     text-shadow:
         -1px -1px 0 black,
         1px -1px 0 black,

@@ -22,12 +22,12 @@ export default function GamePage() {
     const [showHands, setShowHands] = useState(false);  
     const [gameState, setGameState] = useState([]);
     const [dealerAction, setDealerAction] = useState(false);
-
     const [currentHand, setCurrentHand] = useState(0);
     const [handOver, setHandOver] = useState([false]);
     const [gameOver, setGameOver] = useState(false);
     const [pendingDD, setPendingDD] = useState(false);
 
+    // Card counting states
     const [count, setCount] = useState(0);
     const [showCount, setShowCount] = useState(false);
 
@@ -336,7 +336,7 @@ export default function GamePage() {
     const reset = () => {
         setShowHands(false);
 
-        setHandOver[[false]];
+        setHandOver([false]);
         setGameOver(false);
         setGameState([]);
 
@@ -347,52 +347,40 @@ export default function GamePage() {
     }
     
     return (
-        <div className="game-page">
+        <>
             <p className="chip-counter">{chipCount}</p>
-            <p className="count" 
-            onMouseEnter={() => setShowCount(true)}
-            onMouseLeave={() => setShowCount(false)}>
-                {showCount ? count : "Count"}
-            </p>
-
-            {!showHands && (
-                <>
-                    <div className="game-setup">
-                        <h2>Place Your Bet:</h2>
-                        <form onSubmit={setup}>
-                            <input
-                                type="number"
-                                value={wager}
-                                onChange={(e) => setWager(e.target.value)}
-                                required
-                                min="10"
-                                max={Math.min(chipCount, 200)}
-                            />
-                            <button type="submit">
-                                Deal
-                            </button>
-                        </form>
-                    </div>
-                </>
-            )}
+                <div className="count-badge" onClick={() => setShowCount(!showCount)}>
+                    {showCount ? count : "Count"}
+                </div>
             
-            {showHands && (
-                <>
-                    <div className="game-elements">
-                        <h2>Dealer</h2>
-                        <Hand hand={dealerHand} isDealer={true} hideDealerCard={!gameOver}/>
-                        <h2>Player</h2>
-                        <PlayerHands hands={playerHands} current={currentHand} state={gameState}/>
-                        <div className="game-actions">
-                            <button onClick={handleHit}>Hit</button>
-                            <button onClick={handleStand}>Stand</button>
-                            <button onClick={handleDoubleDown}>Double Down</button>
-                            <button onClick={handleSplit}>Split</button>
-                        </div>
-                        {gameOver && <button className="reset" onClick={reset}>Reset</button>}
+            <div className="game-page">
+                <div className={`game-setup ${showHands ? "inactive" : "active"}`}>
+                    <h2>Place Your Bet:</h2>
+                    <form onSubmit={setup}>
+                        <input
+                        type="number"
+                        value={wager}
+                        onChange={(e) => setWager(e.target.value)}
+                        required
+                        min="10"
+                        max={Math.min(chipCount, 200)}
+                        />
+                        <button type="submit">Deal</button>
+                    </form>
+                </div>
+
+                <div className={`game-elements ${showHands ? "active" : "inactive"}`}>
+                    <Hand hand={dealerHand} isDealer hideDealerCard={!gameOver}/>
+                    <PlayerHands hands={playerHands} current={currentHand} state={gameState} show={showHands}/>
+                    <div className="game-actions">
+                        <button onClick={handleHit}>Hit</button>
+                        <button onClick={handleStand}>Stand</button>
+                        <button onClick={handleDoubleDown}>Double Down</button>
+                        <button onClick={handleSplit}>Split</button>
                     </div>
-                </>
-            )}
-        </div>
+                    {gameOver && <button className="reset" onClick={reset}>Reset</button>}
+                </div>
+            </div>
+        </>
     );
 }

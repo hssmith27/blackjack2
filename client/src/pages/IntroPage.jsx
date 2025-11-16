@@ -6,7 +6,7 @@ export default function IntroPage() {
 
     return (
         <div className="landing-page">
-            <h1>Welcome to 21 Tactics!</h1>
+            <h1>Welcome to Cardist</h1>
             <button onClick={() => navigate("/login")}>Log in</button>
             <button onClick={() => navigate("/register")}>Register</button>
         </div>

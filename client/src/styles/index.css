@@ -1,8 +1,10 @@
 body {
-    font-family: 'Mulish', sans-serif;
-    background-image: url("background.png");
+    font-family: 'Poppins', sans-serif;
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.20)), /* brighter subtle gradient */
+        url("background.png");
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment:fixed;
-    background-size:cover;
+    background-attachment: fixed;
+    background-size: cover;
 }

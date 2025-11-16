@@ -44,7 +44,7 @@ export default function LoginPage() {
     
     return (
         <div className="landing-page">
-            <h1>Login to 21 Tactics</h1>
+            <h1>Login to Cardist</h1>
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"
@@ -64,7 +64,7 @@ export default function LoginPage() {
                     Submit
                 </button>
                 {error && <div className="error">{error}</div>}
-                <p>Create an account: <a href = "/register">Register Here</a></p>
+                <p>Don't have an account yet? <a href = "/register">Register Here</a></p>
             </form>
         </div>
     );

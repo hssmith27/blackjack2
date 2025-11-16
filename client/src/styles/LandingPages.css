@@ -1,71 +1,148 @@
+/* ====== General Body Styles ====== */
 body {
+    font-family: 'Poppins', sans-serif;
+    background: 
+        linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), /* subtle overlay */
+        url("background.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
     margin: 0;
     padding: 0;
-    min-height: 100vh;
+    color: #f5f5f5;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
 }
 
+/* ====== Landing Page Container ====== */
 .landing-page {
-    width: 50vw;
-    max-width: 800px;
-    padding: 4% 6%;
-    background: radial-gradient(circle at center, #35654d 0%, #004d40 100%);
+    width: 90vw;
+    max-width: 550px;  
+    min-height: 60vh;
+    padding: 3rem 2rem;
+    background-color: rgba(26,26,26,0.95);
     border-radius: 1rem;
-    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-    
-    border-color: black;
-    border-width: 0.2rem;
-    border-style: solid;
-}
-
-.landing-page h1 {
+    box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* vertical centering */
     text-align: center;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    font-size: 2.75rem;
-    color: #FFFFFF;
-    text-shadow:
-        -1px -1px 0 black,
-        1px -1px 0 black,
-        -1px 1px 0 black,
-        1px 1px 0 black;
 }
 
+/* ====== Headings ====== */
+.landing-page h1 {
+    font-weight: 600;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+    color: #ffffff;
+}
+
+/* ====== Forms ====== */
 .landing-page form {
     display: flex;
     flex-direction: column;
-    gap: 0.35vw;
+    gap: 1rem;
+    width: 100%;
+    align-items: center; /* center inputs and buttons */
 }
 
+/* Inputs */
 .landing-page input {
-    padding: 3%;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0.4rem;
-    box-sizing: border-box;
     width: 100%;
+    max-width: 400px;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    background-color: #222222;
+    color: #ffffff;
+    transition: all 0.3s ease;
 }
 
-.landing-page button {
-    padding: 3%;
+.landing-page input::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+.landing-page input:focus {
+    outline: none;
+    border-color: #00bfa5;
+    box-shadow: 0 0 8px rgba(0,191,165,0.4);
+    background-color: #2a2a2a;
+}
+
+/* ====== Buttons ====== */
+button {
+    width: 100%;
+    max-width: 400px;
+    padding: 1rem 2rem;
+    margin: 0.5rem 0;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #00bfa5, #004d40);
+    color: #fff;
+    font-weight: 600;
     font-size: 1rem;
-    background-color: black;
-    color: white;
     border: none;
-    border-radius: 0.4rem;
     cursor: pointer;
-    width: 100%;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
 }
 
-.landing-page button:hover {
-    background-color: #333
+button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.7);
 }
 
-.error {
-    color: red;
+button:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+/* ====== Error Messages ====== */
+.error, .login-error {
+    color: #ff6b6b;
     text-align: center;
     font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+/* ====== Links ====== */
+.landing-page a {
+    color: #00bfa5;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.landing-page a:hover {
+    text-decoration: underline;
+}
+
+/* ====== Paragraphs ====== */
+.landing-page p {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+}
+
+/* ====== Responsive Design ====== */
+@media (max-width: 768px) {
+    .landing-page {
+        width: 95vw;
+        max-width: 450px;
+    }
+
+    .landing-page h1 {
+        font-size: 2rem;
+    }
+
+    button, input {
+        padding: 0.9rem;
+        font-size: 0.95rem;
+    }
 }

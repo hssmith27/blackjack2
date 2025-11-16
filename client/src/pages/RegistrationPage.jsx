@@ -41,7 +41,7 @@ export default function RegistrationPage() {
     }
     return (
         <div className="landing-page">
-            <h1>Register for 21 Tactics</h1>
+            <h1>Register for Cardist</h1>
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"
@@ -61,6 +61,7 @@ export default function RegistrationPage() {
                     Submit
                 </button>
                 {error && <div className="login-error">{error}</div>}
+                <p>Already have an account? <a href = "/login">Login Here</a></p>
             </form>
         </div>
     );
