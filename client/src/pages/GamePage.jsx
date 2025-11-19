@@ -98,13 +98,13 @@ export default function GamePage() {
             }
         }
         catch (err) {
-            console.error("Failed to update chips:", error);
+            console.error("Failed to update chips:", err);
         }
     }
 
     // Creates new shoe when halfway through the current shoe
     useEffect(() => {
-        if (deck.length <= (NUM_DECKS * 26)) {
+        if (deck.length <= (NUM_DECKS * 26) && gameOver) {
             setDeck(shuffle(createShoe(6)));
             setCount(0);
         }
