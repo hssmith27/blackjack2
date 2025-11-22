@@ -15,6 +15,14 @@ This full-stack Blackjack app allows users to register, log in securely, and pla
 
 ---
 
+## How to Use
+
+To run this app locally:
+1. Open a terminal, navigate to the **server** directory, and run: npm start
+2. Open a second terminal, navigate to the **client** directory, and run: npm start
+
+---
+
 ## Features
 
 - User authentication with bcrypt password hashing  
