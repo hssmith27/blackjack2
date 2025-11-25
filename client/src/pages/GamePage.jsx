@@ -363,8 +363,8 @@ export default function GamePage() {
                         value={wager}
                         onChange={(e) => setWager(e.target.value)}
                         required
-                        min="10"
-                        max={Math.min(chipCount, 200)}
+                        min={Math.min(chipCount, 10)}
+                        max={Math.min(chipCount, 100)}
                         />
                         <button type="submit">Deal</button>
                     </form>

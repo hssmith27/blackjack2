@@ -15,7 +15,6 @@
     transform-origin: top center;
 }
 
-/* --- Headings --- */
 .game-page h2 {
     font-weight: 700;
     font-size: 1.8rem;
@@ -24,7 +23,6 @@
     color: #ffffff;
 }
 
-/* --- Betting Panel & Form --- */
 .game-setup, 
 .game-elements {
     width: 100%;
@@ -85,7 +83,6 @@
     box-shadow: 0 12px 28px rgba(0,0,0,0.7);
 }
 
-/* --- Player Action Buttons --- */
 .game-actions {
     display: flex;
     justify-content: center;
@@ -119,7 +116,6 @@
     box-shadow: 0 3px 8px rgba(0,0,0,0.7);
 }
 
-/* --- Faded Panels --- */
 .active {
     opacity: 1;
     pointer-events: auto;
@@ -130,7 +126,6 @@
     pointer-events: none;
 }
 
-/* --- Chip Counter and Card Count --- */
 .chip-counter,
 .count-badge {
     position: fixed;
@@ -168,7 +163,6 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.6);
 }
 
-/* --- Responsive --- */
 @media (max-width: 768px) {
     .game-page {
         width: 90vw;
